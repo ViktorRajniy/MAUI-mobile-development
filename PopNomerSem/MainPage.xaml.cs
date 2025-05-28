@@ -4,7 +4,7 @@ namespace PopNomerSem
 {
     public partial class MainPage : ContentPage
     {
-        private ObservableCollection<Note> _notes = [
+        private List<Note> _notes = [
             new Note {Title = "qwe"},
             new Note {Title = "wer"},
             new Note {Title = "ert"},
@@ -24,29 +24,27 @@ namespace PopNomerSem
 
         private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
         {            
-            var search = e.NewTextValue?.ToLower() ?? string.Empty;
-
+            var search = e.NewTextValue?.ToLower();
             if(search.Equals(string.Empty))
             {
-                ShownNotes.Clear();
-                foreach (var note in _notes)
-                {
-                    ShownNotes.Add(note);
-                }
+                UpdateShowsNotes(_notes);
             }
             else
             {
                 var filteredNotes = _notes
                     .Where(n => n.Title.ToLower().Contains(search))
                     .ToList();
-
-                ShownNotes.Clear();
-                foreach (var note in filteredNotes)
-                {
-                    ShownNotes.Add(note);
-                }
+                UpdateShowsNotes(filteredNotes);
             }
+        }
 
+        private void UpdateShowsNotes(List<Note> newNotes)
+        {
+            ShownNotes.Clear();
+            foreach (var note in newNotes)
+            {
+                ShownNotes.Add(note);
+            }
         }
 
         private void Button_Clicked(object sender, EventArgs e)
