@@ -11,9 +11,9 @@
         /// All user notes in application.
         /// </summary>
         private List<Note> _notes = [
-            new Note {Title = "qwe"},
-            new Note {Title = "wer"},
-            new Note {Title = "ert"},
+            new Note {Title = "First note", Text="This is first note"},
+            new Note {Title = "Second note", Text="This is second note"},
+            new Note {Title = "Third note", Text="This is third note"},
             ];
 
         /// <summary>
@@ -109,6 +109,19 @@
         private void Button_Clicked(object sender, EventArgs e)
         {
             Navigation.PushAsync(new NotePage(this));
+        }
+
+        /// <summary>
+        /// Action when item in notes list is selected.
+        /// </summary>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">Event args.</param>
+        private void NotesList_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (e.SelectedItem is Note selectedNote)
+            {
+                Navigation.PushAsync(new NotePage(selectedNote, this));
+            }
         }
     }
 }

@@ -3,7 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PopNomerSem.NotePage"
              Title="NotePage">
-    <VerticalStackLayout>
+	<VerticalStackLayout
+            Padding="30,0"
+            Spacing="25">
 		<Entry x:Name="TitleEntry" Placeholder="Title" />
 		<Editor x:Name="TextEditor" Placeholder="Note text" />
 		<DatePicker x:Name="DatePicker" />
