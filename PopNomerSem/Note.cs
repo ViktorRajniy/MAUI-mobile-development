@@ -1,10 +1,18 @@
 ﻿namespace PopNomerSem
 {
+    using SQLite;
+
     /// <summary>
     /// Note that user create.
     /// </summary>
     public class Note
     {
+        /// <summary>
+        /// Id of node.
+        /// </summary>
+        [PrimaryKey, AutoIncrement]
+        public int Id { get; set; }
+
         /// <summary>
         /// Title of note.
         /// </summary>
@@ -24,15 +32,20 @@
             get { return _text; }
             set { _text = value; }
         }
-        
+
         /// <summary>
-        /// Date of note.
+        /// Date of note creation.
         /// </summary>
-        private DateTime _date = DateTime.Now;
-        public DateTime Date
-        {
-            get { return _date; }
-            set { _date = value; }
-        }
+        public DateTime DateOfCreation { get; set; }
+
+        /// <summary>
+        /// New date of note.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
+
+        /// <summary>
+        /// Scheduled date.
+        /// </summary>
+        public DateTime ScheduledDate { get; set; }
     }
 }

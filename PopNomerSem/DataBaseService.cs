@@ -54,8 +54,8 @@ namespace PopNomerSem
             }
             else
             {
-                note.CreatedDate = DateTime.Now; 
-                note.ModifiedDate = note.CreatedDate; 
+                note.DateOfCreation = DateTime.Now; 
+                note.ModifiedDate = note.DateOfCreation; 
                 return await _database.InsertAsync(note);
             }
         }
