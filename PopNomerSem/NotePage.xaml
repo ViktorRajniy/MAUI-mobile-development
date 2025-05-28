@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PopNomerSem.NotePage"
+             Title="NotePage">
+    <VerticalStackLayout>
+		<Entry x:Name="TitleEntry" Placeholder="Title" />
+		<Editor x:Name="TextEditor" Placeholder="Note text" />
+		<DatePicker x:Name="DatePicker" />
+		<TimePicker x:Name="TimePicker" />
+		<Button Text="Save" Clicked="OnSaveClicked" />
+		<Button Text="Cancel" Clicked="OnCancelClicked" />
+	</VerticalStackLayout>
+</ContentPage>

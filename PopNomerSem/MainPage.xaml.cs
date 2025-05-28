@@ -22,6 +22,30 @@ namespace PopNomerSem
             NotesList.ItemsSource = ShownNotes;
         }
 
+        public void UpdateNoteList()
+        {
+            ShownNotes.Clear();
+            foreach (var note in _notes)
+            {
+                ShownNotes.Add(note);
+            }
+        }
+
+        public void UpdateNote(Note oldNote, Note newNote)
+        {
+            var index = _notes.IndexOf(oldNote);
+            if (index != -1)
+            {
+                _notes[index] = newNote;
+            }
+            UpdateNoteList();
+        }
+        public void AddNote(Note note)
+        {
+            _notes.Add(note);
+            UpdateNoteList();
+        }
+
         private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
         {            
             var search = e.NewTextValue?.ToLower();
@@ -49,7 +73,7 @@ namespace PopNomerSem
 
         private void Button_Clicked(object sender, EventArgs e)
         {
-
+            Navigation.PushAsync(new NotePage(this));
         }
     }
 }
