@@ -5,6 +5,7 @@
     /// <summary>
     /// Note that user create.
     /// </summary>
+    [Table("Note")]
     public class Note
     {
         /// <summary>
@@ -36,7 +37,7 @@
         /// <summary>
         /// Date of note creation.
         /// </summary>
-        public DateTime DateOfCreation { get; set; }
+        public DateTime DateOfCreation { get; set; } = DateTime.Now;
 
         /// <summary>
         /// New date of note.

@@ -27,9 +27,14 @@ namespace PopNomerSem
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Databaseerror:{ex.Message}");
+                Debug.WriteLine($"Database error:{ex.Message}");
             }
         }
+
+        const SQLite.SQLiteOpenFlags Flags = 
+            SQLite.SQLiteOpenFlags.ReadWrite |
+            SQLite.SQLiteOpenFlags.Create |
+            SQLite.SQLiteOpenFlags.SharedCache;
 
         public async Task<List<Note>> GetNotesAsync()
         {
@@ -54,10 +59,17 @@ namespace PopNomerSem
             }
             else
             {
-                note.DateOfCreation = DateTime.Now; 
-                note.ModifiedDate = note.DateOfCreation; 
+                note.DateOfCreation = DateTime.Now;
+                note.ModifiedDate = note.DateOfCreation;
                 return await _database.InsertAsync(note);
             }
         }
+
+        public async Task<int> DeleteNoteAsync(Note note)
+        {
+            await InitializeDatabase();
+            return await _database.DeleteAsync(note);
+        }
+
     }
 }

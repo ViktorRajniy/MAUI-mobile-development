@@ -1,6 +1,9 @@
 ﻿namespace PopNomerSem
 {
+    using System;
     using System.Collections.ObjectModel;
+    using System.ComponentModel;
+    using System.Runtime.CompilerServices;
 
     /// <summary>
     /// Main page of application.
@@ -8,13 +11,29 @@
     public partial class MainPage : ContentPage
     {
         /// <summary>
+        /// Data context of data base.
+        /// </summary>
+        private readonly DataBaseService _dataBaseService;
+
+        /// <summary>
+        /// Flag that shows that data is refreshed.
+        /// </summary>
+        private bool _isRefreshing;
+        public bool IsRefreshing
+        {
+            get { return _isRefreshing; }
+            set { _isRefreshing = value; OnPropertyChanged(); }
+        }
+
+        /// <summary>
         /// All user notes in application.
         /// </summary>
-        private List<Note> _notes = [
-            new Note {Title = "First note", Text="This is first note"},
-            new Note {Title = "Second note", Text="This is second note"},
-            new Note {Title = "Third note", Text="This is third note"},
-            ];
+        private List<Note> _notes = [];
+        public List<Note> Notes
+        {
+            get { return _notes; }
+            set { _notes = value; OnPropertyChanged(); }
+        }
 
         /// <summary>
         /// Notes that user see in main page.
@@ -24,14 +43,44 @@
         /// <summary>
         /// Initialise main page.
         /// </summary>
-        public MainPage()
+        public MainPage(DataBaseService dataBaseService)
         {
             InitializeComponent();
-            foreach (var note in _notes)
-            {
-                ShownNotes.Add(note);
-            }
+            _dataBaseService = dataBaseService;
+            LoadNotes();
+            UpdateNoteList();
             NotesList.ItemsSource = ShownNotes;
+        }
+
+        /// <summary>
+        /// Overrided method.
+        /// </summary>
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            LoadNotes();
+        }
+        
+        /// <summary>
+        /// Load notes from data base.
+        /// </summary>
+        /// <returns>Task complite.</returns>
+        public async Task LoadNotes()
+        {
+            try
+            {
+                IsRefreshing = true;
+                Notes = await _dataBaseService.GetNotesAsync();
+                UpdateNoteList();
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", "Fail to load notes", "OK");
+            }
+            finally
+            {
+                IsRefreshing = false;
+            }
         }
 
         /// <summary>
@@ -58,25 +107,18 @@
         }
 
         /// <summary>
-        /// Add new note.
-        /// </summary>
-        /// <param name="note">New note.</param>
-        public void AddNote(Note note)
-        {
-            _notes.Add(note);
-            UpdateNoteList();
-        }
-
-        /// <summary>
         /// Update list of notes that user see.
         /// </summary>
         /// <param name="newNotes">New list of notes.</param>
         private void UpdateShowsNotes(List<Note> newNotes)
         {
             ShownNotes.Clear();
-            foreach (var note in newNotes)
+            if (newNotes != null)
             {
-                ShownNotes.Add(note);
+                foreach (var note in newNotes)
+                {
+                    ShownNotes.Add(note);
+                }
             }
         }
 
@@ -86,9 +128,9 @@
         /// <param name="sender">Sender.</param>
         /// <param name="e">Event args.</param>
         private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
-        {            
+        {
             var search = e.NewTextValue?.ToLower();
-            if(search.Equals(string.Empty))
+            if (search.Equals(string.Empty))
             {
                 UpdateShowsNotes(_notes);
             }
@@ -106,9 +148,9 @@
         /// </summary>
         /// <param name="sender">Sender.</param>
         /// <param name="e">Event args.</param>
-        private void Button_Clicked(object sender, EventArgs e)
+        private async void Button_Clicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new NotePage(this));
+            await Navigation.PushAsync(new NotePage(_dataBaseService));
         }
 
         /// <summary>
@@ -116,11 +158,12 @@
         /// </summary>
         /// <param name="sender">Sender.</param>
         /// <param name="e">Event args.</param>
-        private void NotesList_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        private async void NotesList_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             if (e.SelectedItem is Note selectedNote)
             {
-                Navigation.PushAsync(new NotePage(selectedNote, this));
+                await Navigation.PushAsync(new NotePage(_dataBaseService, selectedNote));
+                NotesList.SelectedItem = null;
             }
         }
     }
