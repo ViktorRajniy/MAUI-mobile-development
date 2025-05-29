@@ -9,6 +9,27 @@
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+			<Color x:Key="PrimaryColor">#512BD4</Color>
+			<x:String x:Key="FontFamily">OpesSans</x:String>
+			<x:Double x:Key="FontSize">14</x:Double>
+
+			<Style TargetType="Button" ApplyToDerivedTypes="True">
+				<Setter Property="BackgroundColor" Value="{DynamicResource PrimaryColor}"/>
+				<Setter Property="TextColor" Value="White"/>
+				<Setter Property="FontFamily" Value="{DynamicResource FontFamily}"/>
+				<Setter Property="FontSize" Value="{DynamicResource FontSize}"/>
+				<Setter Property="CornerRadius" Value="10"/>
+				<Setter Property="Padding" Value="14,10"/>
+			</Style>
+			<Style TargetType="Label" ApplyToDerivedTypes="True">
+				<Setter Property="FontFamily" Value="{DynamicResource FontFamily}"/>
+				<Setter Property="FontSize" Value="{DynamicResource FontSize}"/>
+				<Setter Property="TextColor" Value="{DynamicResource PrimaryColor}"/>
+			</Style>
+			<Style TargetType="Entry" ApplyToDerivedTypes="True">
+				<Setter Property="FontFamily" Value="{DynamicResource FontFamily}"/>
+				<Setter Property="FontSize" Value="{DynamicResource FontSize}"/>
+			</Style>
+		</ResourceDictionary>
     </Application.Resources>
 </Application>

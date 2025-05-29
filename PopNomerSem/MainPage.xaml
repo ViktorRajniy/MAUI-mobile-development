@@ -16,7 +16,8 @@
 				</ListView.ItemTemplate>
 			</ListView>
 			<Button Text="Add new note" Clicked="Button_Clicked"/>
+			<Button x:Name="SettingsButton" Text="Settings" Clicked="SettingsButton_Clicked"/>
 		</VerticalStackLayout>
-    </ScrollView>
+	</ScrollView>
 
 </ContentPage>
