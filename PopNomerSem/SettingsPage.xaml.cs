@@ -2,8 +2,14 @@ namespace PopNomerSem
 {
     using System.Collections.ObjectModel;
 
+    /// <summary>
+    /// Page with application settings.
+    /// </summary>
     public partial class SettingsPage : ContentPage
     {
+        /// <summary>
+        /// Collection of colors that user can pick.
+        /// </summary>
         public ObservableCollection<ColorOption> AvailableColors { get; } = new()
         {
             new ColorOption("Синий", "#512BD4"),
@@ -11,6 +17,9 @@ namespace PopNomerSem
             new ColorOption("Зеленый", "#00FF00")
         };
 
+        /// <summary>
+        /// Collection of font names.
+        /// </summary>
         public ObservableCollection<string> AvailableFonts { get; } = new()
         {
             "OpenSans",
@@ -18,6 +27,9 @@ namespace PopNomerSem
             "Arial"
         };
 
+        /// <summary>
+        /// Size of font.
+        /// </summary>
         private double _fontSize = 14;
         public double FontSize
         {
@@ -30,12 +42,14 @@ namespace PopNomerSem
             }
         }
 
+        /// <summary>
+        /// Initialise setting page.
+        /// </summary>
         public SettingsPage()
         {
             InitializeComponent();
             BindingContext = this;
 
-            // Загрузка текущих настроек
             if (Preferences.ContainsKey("PrimaryColor"))
             {
                 var colorName = Preferences.Get("PrimaryColor", "Синий");
@@ -49,9 +63,11 @@ namespace PopNomerSem
                 FontSizeSlider.Value = Preferences.Get("FontSize", 14.0);
         }
 
+        /// <summary>
+        /// Update application with new styles.
+        /// </summary>
         private void UpdateStyles()
         {
-            // Обновляем ресурсы приложения
             if (ColorPicker.SelectedItem is ColorOption selectedColor)
             {
                 Application.Current.Resources["PrimaryColor"] = Color.FromArgb(selectedColor.Value);
@@ -65,6 +81,11 @@ namespace PopNomerSem
             Application.Current.Resources["FontSize"] = FontSize;
         }
 
+        /// <summary>
+        /// Action when Save settings button clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnSaveSettingsClicked(object sender, EventArgs e)
         {
             if (ColorPicker.SelectedItem is ColorOption color)
@@ -78,6 +99,11 @@ namespace PopNomerSem
             DisplayAlert("Сохранено", "Настройки успешно сохранены", "OK");
         }
 
+        /// <summary>
+        /// Action when Reset settings button clicked. Reset default settings.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnResetSettingsClicked(object sender, EventArgs e)
         {
             Preferences.Clear();
@@ -86,18 +112,5 @@ namespace PopNomerSem
             FontSizeSlider.Value = 14;
             UpdateStyles();
         }
-    }
-
-    public class ColorOption
-    {
-        public string Name { get; set; }
-        public string Value { get; set; }
-
-        public ColorOption(string name, string value)
-        {
-            Name = name;
-            Value = value;
-        }
-
     }
 }
